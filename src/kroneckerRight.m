@@ -17,33 +17,38 @@ function [Y] = kroneckerRight(B,M)
 %
 %  Part of the KroneckerTools repository: github.com/jborggaard/KroneckerTools
 %%
-  d = length(M);
-  n1 = zeros(1,d); n2 = zeros(1,d);
-  for i=1:d
-    [n1(i),n2(i)] = size(M{i});
-  end
+  [m, nB] = size(B);
 
-  [m,nB] = size(B);
-
-  if ( d==2 )
-    Y = zeros(m,n2(1)*n2(2));
-    for i=1:m
-      Y(i,:) = reshape( M{2}.'*reshape(B(i,:),n1(2),n1(1))*M{1}, 1,n2(1)*n2(2) );
+  if (iscell(M))
+    d = length(M);
+    n1 = zeros(1,d); n2 = zeros(1,d);
+    for i=1:d
+      [n1(i),n2(i)] = size(M{i});
     end
 
-  else
-    n2Y = prod(n2);
-    Y = zeros(m,n2Y);
-    for i=1:m
-      T = M{d}.'*reshape(B(i,:),n1(d),nB/n1(d));
-
-      Z = zeros(n2(d),prod(n2(1:end-1)));
-      for j=1:n2(d)
-        Z(j,:) = kroneckerRight(T(j,:),M(1:end-1));
+    if ( d==2 )
+      Y = zeros(m,n2(1)*n2(2));
+      for i=1:m
+        Y(i,:) = reshape( M{2}.'*reshape(B(i,:),n1(2),n1(1))*M{1}, 1,n2(1)*n2(2) );
       end
-      Y(i,:) = Z(:).';
-    end
-  end
 
+    else
+      n2Y = prod(n2);
+      Y = zeros(m,n2Y);
+      for i=1:m
+        T = M{d}.'*reshape(B(i,:),n1(d),nB/n1(d));
+
+        Z = zeros(n2(d),prod(n2(1:end-1)));
+        for j=1:n2(d)
+          Z(j,:) = kroneckerRight(T(j,:),M(1:end-1));
+        end
+        Y(i,:) = Z(:).';
+      end
+    end
+
+  else % we consider the case where M{i} = M for each i:
+    Y = kroneckerLeft(M.',B.').';
+  
+  end
 end
 
