@@ -1,7 +1,8 @@
 # KroneckerTools
-Functions for working with Kronecker sum systems and as well as polynomials expressed using Kronecker products.
+Functions for working with polynomials expressed using Kronecker products
+as well as associated Kronecker sum systems.
 
-Used by various functions in both the QQR and NLbalancing software repositories.
+Used by various functions in both the QQR (https://www.github.com/jborggaard/QQR) and NLbalancing (https://www.github.com/jborggaard/NLbalancing) software repositories.
 
 # License
 This software is covered by the MIT license.
@@ -28,6 +29,16 @@ calT_{m,k}.'*v.  The term calT_{m,k} is the sum of Kronecker products of matrice
 Evaluates a Kronecker product polynomial out to a given degree.  For example, 
 
 > x = c{1}z + c{2}kron(z,z) + ... + c{degree}kron(z,kron(z,...kron(z,z)).
+
+```
+ [c] = kronPolySymmetrize(c,n,degree)
+```
+Symmetrizes the coefficients of a Kronecker product polynomial at a given degree.  For example, if c = [1 1 0 2];
+
+> c = kronPolySymmetrize(c,2,2)
+
+returns c = [1 0.5 0.5 2], so the coefficients of the x_1 x_2 term is the same as the x_2 x_1 term.
+
 
 ```
  [Y] = kroneckerLeft(M,B)
