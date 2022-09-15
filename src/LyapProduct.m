@@ -1,8 +1,9 @@
 function [Mv] = LyapProduct(M,v,d)
 %LyapProduct Computes the product of an N-way Lyapunov matrix with a vector v
-%     Given a matrix M (that generates a specialized Kronecker sum matrix, aka
-%     an N-way Lyapunov matrix) in d dimensions, compute it's product with the
-%     column vector v.
+%
+%     Given a square matrix M, generate the product of its specialized Kronecker 
+%     sum matrix, aka its N-way Lyapunov matrix, in d dimensions.  Then compute 
+%     its product with the column vector v.
 %
 %   Usage:  [Mv] = LyapProduct(M,v,d);
 %
@@ -34,12 +35,12 @@ function [Mv] = LyapProduct(M,v,d)
   end
   
   V = reshape(v,n^(d-1),n);
-  Mv = reshape(V*M.',m*n^(d-1),1);
+  Mv = reshape(V*M.',m*n^(d-1),1);      % compute the first term in the sum
   
   V = reshape(v,n,n^(d-1));
-  Mv = Mv + reshape(M*V,m*n^(d-1),1);
+  Mv = Mv + reshape(M*V,m*n^(d-1),1);   % compute the last term in the sum
   
-  for l=1:d-2
+  for l=1:d-2                           % loop to compute the rest
     V1 = reshape(v,n^(d-l),n^l);
     
     mat = zeros(m*n^(d-l-1),n^l);
@@ -50,6 +51,6 @@ function [Mv] = LyapProduct(M,v,d)
     Mv = Mv + reshape(mat,m*n^(d-1),1);
   end
   
-  Mv = Mv(:);
+  Mv = Mv(:); % redundant?
 end
 

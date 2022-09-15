@@ -18,11 +18,13 @@ function [c] = kronPolySymmetrize(c,n,degree)
 %  Part of the KroneckerTools repository.
 %%
   
-  [dc1,dc2] = size(c);
+  dc2 = size(c,2);
 
   if (dc2>1)
     isRow = true;
     c = c(:);
+  else
+    isRow = false;
   end
   
   if (nargin<3)
@@ -31,7 +33,6 @@ function [c] = kronPolySymmetrize(c,n,degree)
   
   % an inefficient way to approach this and requires functions in the util
   % subdirectory
-  addpath('../util')
   S = Kron2CT(n,degree);
   C = CT2Kron(n,degree);
 
