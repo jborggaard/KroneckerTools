@@ -25,7 +25,7 @@ function [vd] = KroneckerPower(v,d)
 
   % Recursive step
   else
-    vd = kron(v,kron_power(v,d-1));
+    vd = kron(v,KroneckerPower(v,d-1));
   end
 
 end % function KroneckerPower
