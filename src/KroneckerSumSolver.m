@@ -38,7 +38,7 @@ function [x] = KroneckerSumSolver(A,b,degree,M)
   end
   
   if ( nargin<4 )
-    UMU = spzeros(n);
+    UMU = sparse(n,n);
   else
     UMU = U'*M*U;
   end
@@ -313,9 +313,78 @@ function [x] = KroneckerSumSolver(A,b,degree,M)
       
       x = X(:);
 
+    case 8 % the degree=8 case
+
+      X = zeros(n,n^8);
+      B = reshape(b,n,n^8);
+
+      for j9=n:-1:1
+        j9Range = j9+1:n;
+        for j8=n:-1:1
+          j8Range = j8+1:n;
+          for j7=n:-1:1
+            j7Range = j7+1:n;
+            for j6=n:-1:1
+              j6Range = j6+1:n;
+              for j5=n:-1:1
+                j5Range = j5+1:n;
+                for j4=n:-1:1
+                  j4Range = j4+1:n;
+                  for j3=n:-1:1
+                    j3Range = j3+1:n;
+                    for j2=n:-1:1
+                      j2Range = j2+1:n;
+
+                      At = A{1} + (A{2}(j2,j2)+A{3}(j3,j3)+A{4}(j4,j4)+A{5}(j5,j5)+A{6}(j6,j6)+A{7}(j7,j7)+A{8}(j8,j8)+A{9}(j9,j9))*eye(n) + UMU;
+                      rhs = B(:,j2+(j3-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9-1)*n^7);
+
+                      if (~isempty(j2Range))
+                        rhs = rhs - X(:,j2Range+(j3-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9-1)*n^7)*A{2}(j2,j2Range).';
+                      end
+
+                      if (~isempty(j3Range))
+                        rhs = rhs - X(:,j2+(j3Range-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9-1)*n^7)*A{3}(j3,j3Range).';
+                      end
+
+                      if (~isempty(j4Range))
+                        rhs = rhs - X(:,j2+(j3-1)*n+(j4Range-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9-1)*n^7)*A{4}(j4,j4Range).';
+                      end
+
+                      if (~isempty(j5Range))
+                        rhs = rhs - X(:,j2+(j3-1)*n+(j4-1)*n^2+(j5Range-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9-1)*n^7)*A{5}(j5,j5Range).';
+                      end
+
+                      if (~isempty(j6Range))
+                        rhs = rhs - X(:,j2+(j3-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6Range-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9-1)*n^7)*A{6}(j6,j6Range).';
+                      end
+
+                      if (~isempty(j7Range))
+                        rhs = rhs - X(:,j2+(j3-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7Range-1)*n^5+(j8-1)*n^6+(j9-1)*n^7)*A{7}(j7,j7Range).';
+                      end
+
+                      if (~isempty(j8Range))
+                        rhs = rhs - X(:,j2+(j3-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8Range-1)*n^6+(j9-1)*n^7)*A{8}(j8,j8Range).';
+                      end
+
+                      if (~isempty(j9Range))
+                        rhs = rhs - X(:,j2+(j3-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9Range-1)*n^7)*A{9}(j9,j9Range).';
+                      end
+
+                      X(:,j2+(j3-1)*n+(j4-1)*n^2+(j5-1)*n^3+(j6-1)*n^4+(j7-1)*n^5+(j8-1)*n^6+(j9-1)*n^7) = At\rhs;
+                    end
+                  end
+                end
+              end
+            end
+          end   
+        end
+      end
+      
+      x = X(:);
+
     otherwise
       error('not yet implemented')
   end
 
-  x = kroneckerLeft(U,x);
+  x = real(kroneckerLeft(U,x));
 end
