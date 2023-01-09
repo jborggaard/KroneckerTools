@@ -18,6 +18,8 @@ function [c] = kronMonomialSymmetrize(c,b,d,verbose)
 %
 %  Licence: MIT
 %
+%  Documented at: https://people.sc.fsu.edu/~jburkardt/m_src/vector/vector.html
+%
 %  Part of the KroneckerTools repository.
 %%
 
