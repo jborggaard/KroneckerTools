@@ -7,7 +7,7 @@ function [c] = kronMonomialSymmetrize(c,b,d,verbose)
 %     c = kronPolySymmetrize(c,n,degree);
 %
 %  Input Variables:
-%     c - coefficients of the Kronecker polynomial (vector of coefficients)
+%     c - coefficients of the Kronecker polynomial (row vector of coefficients)
 %     n - number of variables in the multinomial
 %     degree - degree of the multinomial terms (c should have n^degree terms)
 %
