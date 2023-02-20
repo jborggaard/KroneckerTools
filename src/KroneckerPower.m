@@ -19,13 +19,26 @@ function [vd] = KroneckerPower(v,d)
   validateattributes(d,{'numeric'},{'positive','scalar','integer'});
 
   % Begin recursion
-  % Base case
-  if d==1
+  % Base cases
+  if d==0
+    vd = zeros(size(v));
+
+  elseif d==1
     vd = v;
+
+  elseif d==2
+    vd = kron(v,v);
 
   % Recursive step
   else
-    vd = kron(v,KroneckerPower(v,d-1));
+    if (mod(d,2)==1) % the odd case
+      tmp = KroneckerPower(v,(d-1)/2);
+      vd  = kron(kron(v,tmp),tmp);
+
+    else % d is even
+      tmp = KroneckerPower(v,d/2);
+      vd  = kron(tmp,tmp);
+    end
   end
 
 end % function KroneckerPower
