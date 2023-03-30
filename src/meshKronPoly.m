@@ -27,8 +27,8 @@ function [figID] = meshKronPoly(v,x1,x2,titleStr,filename)
 
   eFcn = zeros(n1,n2);
   [X,Y] = meshgrid(x1,x2);
-  for i=1:n1
-    for j=1:n2
+  for i=1:n2 % See documentation for meshgrid
+    for j=1:n1 % See documentation for meshgrid
       x = [X(i,j);Y(i,j)];
       eFcn(i,j) = kronPolyEval(v,x,degree);
     end
