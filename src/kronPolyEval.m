@@ -28,16 +28,24 @@ function [x] = kronPolyEval(c,z,degree)
     end
   end
   
-  %  Transpose the coefficients if required
-  if (size(c{2},1)>1)  % assume coefficients are all transposed 
-    if (~isempty(c{1}))
-      c{1} = c{1}.';
-    end
-    for i=1:degree
-      c{i} = c{i}.';
-    end
+  %% Transpose the coefficients if required
+  % Check dimensions of the last entry in c to see which dimension is the
+  % appropriate size. To multiply, the second dimension  of c{k} has to be
+  % length(z)^k; instead of checking all of them, just check the last
+  % entry, with k=d=length(c) already having been defined.
+  [nRows, nCols] = size(c{d});
+  
+  if length(z)^d == nCols
+      % No need to transpose
+  elseif length(z)^d == nRows
+      % Need to transpose, otherwise dimensions will not work
+      c = cellfun(@transpose,c,'UniformOutput',false); 
+  else
+      % Probably won't ever happen but good contingency
+      warning('Dimensions of polynomial coefficients are not consistent')
   end
-
+  
+  %% Perform polynomial evalauation
   %  Special case if the linear term is an empty cell
   if isempty(c{1})
     n = size(c{2},1);
