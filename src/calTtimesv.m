@@ -1,16 +1,13 @@
-function [Y] = calTTtimesv(T,m,k,v)
+function [Y] = calTTtimesv(M,m,k,B)
 %calTTtimesv Calculates the term \cal{T}_{m,k}.'v
-%         w = \|i\|=k kron(T_i1.',kron(T_i2.',kron(T_i3,...,T_im))*v
+%         w = \|i\|=k kron(T_i1.',kron(T_i2.',kron(T_i3.',...,T_im.'))*v
 %
-%  Usage:  w = calTTtimesv(T,m,k,B)
+%  Usage:  w = calTTtimesv(T,m,k,v)
 %
 %  Variables:   T    a cell array with matrices of dimension n times n^p
 %               v    a vector of dimension (n^m)
 %
-%  Contains a subfunction (similar to LyapProduct.m) that computes one term
-%  in the above sum.
-%
-%  This is multiplication performed recursively using Kronecker product rules.
+%  Recursively applies kroneckerLeft to compute the above sum.
 %
 %  Author: Jeff Borggaard, Virginia Tech
 %

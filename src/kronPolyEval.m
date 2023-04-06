@@ -12,6 +12,13 @@ function [x] = kronPolyEval(c,z,degree)
 %
 %  Returns:  x = c{1}*z + c{2}*kron(z,z) + ... c{degree}*kron(...)
 %
+%  or optionally,
+%
+%            x = c{1}.'*z + c{2}.'*kron(z,z) + ...
+%
+%  We optionally handle the special case c{1} = [] by starting with the
+%  quadratic term for applications such as energy functions or value functions.
+%
 %  Author: Jeff Borggaard, Virginia Tech
 %
 %  Licence: MIT
@@ -35,9 +42,9 @@ function [x] = kronPolyEval(c,z,degree)
   % entry, with k=d=length(c) already having been defined.
   [nRows, nCols] = size(c{d});
   
-  if length(z)^d == nCols
+  if (length(z)^d == nCols)
       % No need to transpose
-  elseif length(z)^d == nRows
+  elseif (length(z)^d == nRows)
       % Need to transpose, otherwise dimensions will not work
       c = cellfun(@transpose,c,'UniformOutput',false); 
   else
@@ -46,6 +53,7 @@ function [x] = kronPolyEval(c,z,degree)
   end
   
   %% Perform polynomial evalauation
+
   %  Special case if the linear term is an empty cell
   if isempty(c{1})
     n = size(c{2},1);
