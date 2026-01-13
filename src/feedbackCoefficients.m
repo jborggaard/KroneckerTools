@@ -18,7 +18,7 @@ function [k] = feedbackCoefficients(v,R,B,g)
 %    R  - the control weighting matrix
 %    B  - the input matrix (constant portion of the control inputs)
 %    g  - coefficients of input terms that are degree one or higher
-%         (not implemeneted currently)
+%         (not implemented currently)
 %
 %  Author:
 %    Jeff Borggaard, Virginia Tech

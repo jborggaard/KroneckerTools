@@ -37,7 +37,7 @@ function [x] = kronPolyEval(c,z,degree)
   
   %% Transpose the coefficients if required
   % Check dimensions of the last entry in c to see which dimension is the
-  % appropriate size. To multiply, the second dimension  of c{k} has to be
+  % appropriate size. To multiply, the second dimension of c{k} has to be
   % length(z)^k; instead of checking all of them, just check the last
   % entry, with k=d=length(c) already having been defined.
   [nRows, nCols] = size(c{d});
